@@ -8,7 +8,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   color: #fff;
-  background-color: #0D0C0C;
+  background-color: #0d0c0c;
 
   overflow-x: hidden;
 }
@@ -17,7 +17,7 @@ html {
   overflow-x: hidden;
 }
 
-.inputbox{
+.inputbox {
   width: 100%;
   background-color: #141414;
   border-radius: 5px;
@@ -26,7 +26,7 @@ html {
   margin-bottom: 10px;
 }
 
-.inputbox input{
+.inputbox input {
   flex: 1;
   border: none;
   outline: none;
@@ -36,9 +36,9 @@ html {
   font-size: 16px;
 }
 
-.btnBlue{
-  background-color: #00AEEF;
-  color: #FFF;
+.btnBlue {
+  background-color: #00aeef;
+  color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -47,12 +47,38 @@ html {
   text-align: center;
 }
 
-.btnBlue:hover{
+.btnBlue:hover {
   background-color: #028cbf;
 }
 
-.grid{
+.grid {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+}
+
+.lightMode {
+  background-color: #fff;
+  color: #000 !important;
+}
+
+.lightMode .navbar {
+  background-color: #ebebeb;
+}
+
+.lightMode .navbar .download {
+  background-color: #dfdfdf;
+  color: black;
+}
+
+.lightMode .tabs {
+  background-color: #e1e1e1;
+}
+
+.lightMode .tabs .tab {
+  background-color: #d8d7d7;
+}
+
+.lightMode .features {
+  color: black;
 }

@@ -6,6 +6,7 @@ import { AiOutlineExpandAlt } from "react-icons/ai";
 
 const EditorApp = () => {
   const [islightMode, setIsLightMode] = useState(false);
+
   const changeTheme = () =>{
     if(islightMode){
       document.body.classList.remove("lightMode");
@@ -22,16 +23,16 @@ const EditorApp = () => {
 
         <div className="flex">
             <div className="left w-[50%]">
-                <div className="flex items-center justify-between gap-2 w-full bg-[#1A1919] h-[50px] px-[40px]">
+                <div className="tabs flex items-center justify-between gap-2 w-full bg-[#1A1919] h-[50px] px-[40px]">
                   <div className='flex items-center gap-2'>
-                    <div className='tab p-[6px] bg-[#1E1E1E] px-[10px] text-[15px]'>index.html</div>
-                    <div className='tab p-[6px] bg-[#1E1E1E] px-[10px] text-[15px]'>style.css</div>
-                    <div className='tab p-[6px] bg-[#1E1E1E] px-[10px] text-[15px]'>script.js</div>
+                    <div className='tab p-[6px] bg-[#1E1E1E] px-[10px] text-[15px] rounded-md'>index.html</div>
+                    <div className='tab p-[6px] bg-[#1E1E1E] px-[10px] text-[15px] rounded-md'>style.css</div>
+                    <div className='tab p-[6px] bg-[#1E1E1E] px-[10px] text-[15px] rounded-md'>script.js</div>
                   </div>
 
                   <div className='flex items-center gap-2'>
-                    <i className='text-[20px] cursor-pointer'><MdLightMode /></i>
-                    <i className='text-[20px] cursor-pointer'><AiOutlineExpandAlt /></i>
+                    <i className='features text-[20px] cursor-pointer' onClick={changeTheme}><MdLightMode /></i>
+                    <i className='features text-[20px] cursor-pointer'><AiOutlineExpandAlt /></i>
                   </div>
 
                 </div>

@@ -12,7 +12,7 @@ const EditorNavbar = () => {
       
       <p>File / <span className='text-[gray]'>My first project</span></p>
 
-      <i className='p-[8px] rounded-[5px] bg-black text-[20px] cursor-pointer hover:text-[#bab6b6]'><FiDownload className='' /></i>
+      <i className='download p-[8px] rounded-[5px] bg-black text-[20px] cursor-pointer hover:text-[#bab6b6]'><FiDownload className='' /></i>
     </div>
     </>
   )
