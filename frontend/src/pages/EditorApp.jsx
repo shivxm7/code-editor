@@ -39,8 +39,8 @@ const EditorApp = () => {
     <>
       <EditorNavbar />
 
-      <div className="flex">
-        <div className={`left w-[${isExpanded ? "100%" : "50%"}]`}>
+      <div className="flex w-full">
+        <div className={`left ${isExpanded ? "w-full" : "w-1/2"}`}>
           <div className="tabs flex items-center justify-between gap-2 w-full bg-[#1A1919] h-[50px] px-[40px]">
             <div className="flex items-center gap-2">
               <div
@@ -131,12 +131,10 @@ const EditorApp = () => {
         </div>
         <iframe
           id="iframe"
-          className={`w-[${isExpanded ? "0%" : "50%"}] ${
-            isExpanded ? "hidden" : ""
-          } min-h-[89vh] bg-[#fff] text-black`}
-        >
-          iframe
-        </iframe>
+          className={`min-h-[89vh] bg-[#fff] text-black ${
+            isExpanded ? "hidden" : "w-1/2"
+          }`}
+        ></iframe>
       </div>
     </>
   );
