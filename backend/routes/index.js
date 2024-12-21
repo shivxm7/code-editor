@@ -3,6 +3,7 @@ var router = express.Router();
 var userModel = require("../models/userModel");
 var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+var projectModel = require("../models/projectModel");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -11,6 +12,7 @@ router.get("/", function (req, res, next) {
 
 let secret = "secret"; // secret token for jwt
 
+// Sign up API
 router.post("/signup", async (req, res) => {
   let { username, name, email, password } = req.body;
   let emailCon = await userModel.findOne({ email: email });
@@ -35,6 +37,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// Login API
 router.post("/login", async (req, res) => {
   let { email, password } = req.body;
   let user = await userModel.findOne({ email: email });
@@ -69,4 +72,38 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// User detail API
+router.post("/getUserDetails", async (req, res) => {
+  let { userId } = req.body;
+  let user = await userModel.findOne({ _id: userId });
+  if (user) {
+    return res.json({
+      success: true,
+      messgae: "User details fetch succesfully",
+      user: user,
+    });
+  } else {
+    return res.json({ success: false, message: "User not found" });
+  }
+});
+
+// createProject API
+router.post("/createProject", async (req, res) => {
+  let { userId, title } = req.body;
+  let user = await userModel.findOne({ _id: userId });
+  if (user) {
+    let project = await projectModel.create({
+      title: title,
+      createdBy: userId,
+    });
+
+    return res.json({
+      success: true,
+      message: "project created succesfully",
+      projectId: project._id,
+    });
+  } else {
+    return res.json({ success: false, message: "user not found" });
+  }
+});
 module.exports = router;
