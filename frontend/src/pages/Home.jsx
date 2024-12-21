@@ -9,7 +9,7 @@ import { api_based_url } from "../helper";
 const Home = () => {
   const [createProj, setCreateProj] = useState(false);
   const [isGridLayout, setisGridLayout] = useState(false);
-
+  const [projData, setProjData] = useState(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
 
@@ -44,6 +44,31 @@ const Home = () => {
         });
     }
   };
+
+  const getProj = (e) => {
+    fetch(api_based_url + "/getProjects", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setProjData(data.projects);
+        } else {
+          setError(data.message);
+        }
+      });
+  };
+
+  useEffect(() => {
+    getProj();
+  }, []);
 
   useEffect(() => {
     fetch(api_based_url + "/getUserDetails", {
@@ -87,18 +112,30 @@ const Home = () => {
       <div className="cards">
         {!isGridLayout ? (
           <div className="list px-[100px]">
+            {projData
+              ? projData.map((item, index) => {
+                  return <ListCard key={index} item={item} />;
+                })
+              : ""}
+
+            {/* <ListCard />
             <ListCard />
-            <ListCard />
-            <ListCard />
+            <ListCard /> */}
           </div>
         ) : (
           <div className="grid px-[100px]">
+            {projData
+              ? projData.map((item, index) => {
+                  return <GridCard key={index} item={item} />;
+                })
+              : ""}
+
+            {/* <GridCard />
             <GridCard />
             <GridCard />
             <GridCard />
             <GridCard />
-            <GridCard />
-            <GridCard />
+            <GridCard /> */}
           </div>
         )}
       </div>
