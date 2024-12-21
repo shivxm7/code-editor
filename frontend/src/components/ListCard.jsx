@@ -1,17 +1,45 @@
 import React, { useState } from "react";
 import code from "../images/code.png";
 import delimg from "../images/delete.png";
+import { api_based_url } from "../helper";
 
-const ListCard = () => {
+const ListCard = ({ item }) => {
   const [isDeleteModel, setisDeleteModel] = useState(false);
+
+  const deleteProj = (id) => {
+    fetch(api_based_url + "/deleteProject", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+        progId: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setisDeleteModel(false);
+          window.location.reload();
+        } else {
+          alert(data.message);
+          setisDeleteModel(false);
+        }
+      });
+  };
   return (
     <>
       <div className="listcard mb-2 flex items-center justify-between w-full p-[10px] bg-[#141414] rounded-lg cursor-pointer hover:bg-[#202020]">
         <div className="flex items-center gap-2">
           <img className="w-[80px]" src={code} alt="" />
           <div>
-            <h3 className="text-[20px]">My first Project</h3>
-            <p className="text-[gray] text-[14px]">Craeted on 9 nov 2023</p>
+            <h3 className="text-[20px]">{item.title}</h3>
+            <p className="text-[gray] text-[14px]">
+              Created on {new Date(item.date).toDateString()}
+            </p>
           </div>
         </div>
         <div>
@@ -34,17 +62,22 @@ const ListCard = () => {
             </h3>
 
             <div className="flex w-full mt-3 items-center gap-2">
-              <div className="p-[10px] bg-[#FF4343] hover:bg-[#eb4747] text-white text-center cursor-pointer rounded-lg min-w-[49%]">
+              <button
+                onClick={() => {
+                  deleteProj(item._id);
+                }}
+                className="p-[10px] bg-[#FF4343] hover:bg-[#eb4747] text-white text-center cursor-pointer rounded-lg min-w-[49%]"
+              >
                 Delete
-              </div>
-              <div
+              </button>
+              <button
                 onClick={() => {
                   setisDeleteModel(false);
                 }}
                 className="p-[10px] bg-[#1A1919] hover:bg-[#313030] text-white text-center cursor-pointer rounded-lg min-w-[49%]"
               >
                 Cancel
-              </div>
+              </button>
             </div>
           </div>
         </div>

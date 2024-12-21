@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import code from "../images/code.png";
 import delimg from "../images/delete.png";
 
-const GridCard = () => {
+const GridCard = ({ item }) => {
   const [isDeleteModel, setisDeleteModel] = useState(false);
 
   return (
     <>
       <div className="gridCard bg-[#141414] p-[10px] w-[250px] h-[180px] rounded-lg shadow-lg shadow-black cursor-pointer hover:bg-[#202020]">
         <img className="w-[80px]" src={code} alt="" />
-        <h3 className="text-[20px] w-[90%] line-clamp-1">My first Project</h3>
+        <h3 className="text-[20px] w-[90%] line-clamp-1">{item.title}</h3>
         <div className="flex items-center justify-between">
-          <p className="text-[gray] text-[14px]">Craeted on 9 nov 2023</p>
+          <p className="text-[gray] text-[14px]">
+            Created on {new Date(item.date).toDateString()}
+          </p>
           <img
             onClick={() => {
               setisDeleteModel(true);
