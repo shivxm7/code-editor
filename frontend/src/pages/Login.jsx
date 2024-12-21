@@ -1,14 +1,41 @@
 import React, { useState } from "react";
 import logo from "../images/logo.png";
 import image from "../images/authPageSide.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { api_based_url } from "../helper";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [error, setError] = useState("");
 
-  const submitForm = () => {
+  const navigate = useNavigate();
+
+  const submitForm = (e) => {
     e.preventDefault();
+    fetch(api_based_url + "/login", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: pwd,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("isLoggedIn", true);
+          localStorage.setItem("userId", data.userId);
+          navigate("/");
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch((err) => console.error("Request error:", err));
   };
   return (
     <>
@@ -46,6 +73,8 @@ const Login = () => {
                 Sign Up
               </Link>{" "}
             </p>
+
+            <p className="text-red-500 text-[14px] my-2">{error}</p>
 
             <button className="btnBlue w-full mt-[20px]">Login</button>
           </form>

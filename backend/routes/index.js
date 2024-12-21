@@ -2,11 +2,14 @@ var express = require("express");
 var router = express.Router();
 var userModel = require("../models/userModel");
 var bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
+
+let secret = "secret"; // secret token for jwt
 
 router.post("/signup", async (req, res) => {
   let { username, name, email, password } = req.body;
@@ -35,15 +38,34 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   let { email, password } = req.body;
   let user = await userModel.findOne({ email: email });
+
   if (user) {
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      res.json({ success: true, message: "User login successfully" });
-    } else {
-      res.json({ success: false, message: "Invalid email or Password" });
-    }
+    // Rename the second `res` to avoid conflict
+    bcrypt.compare(password, user.password, function (err, isMatch) {
+      if (err) {
+        return res.json({
+          success: false,
+          message: "An error occurred",
+          error: err,
+        });
+      }
+      if (isMatch) {
+        let token = jwt.sign({ email: user.email, userId: user._id }, secret);
+        return res.json({
+          success: true,
+          message: "User logged in successfully",
+          token: token,
+          userId: user._id,
+        });
+      } else {
+        return res.json({
+          success: false,
+          message: "Invalid email or password",
+        });
+      }
+    });
   } else {
-    res.json({ succes: false, message: "Invalid email or Password" });
+    return res.json({ success: false, message: "User not found!" });
   }
 });
 
