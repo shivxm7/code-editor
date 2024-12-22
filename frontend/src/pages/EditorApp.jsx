@@ -3,6 +3,8 @@ import EditorNavbar from "../components/EditorNavbar";
 import Editor from "@monaco-editor/react";
 import { MdLightMode } from "react-icons/md";
 import { AiOutlineExpandAlt } from "react-icons/ai";
+import { api_based_url } from "../helper";
+import { useParams } from "react-router-dom";
 
 const EditorApp = () => {
   const [islightMode, setIsLightMode] = useState(false);
@@ -11,6 +13,8 @@ const EditorApp = () => {
   const [htmlCode, setHtmlCode] = useState("<h1>Hello World!</h1>");
   const [cssCode, setCssCode] = useState("body { background-color: #f4f4f4; }");
   const [jsCode, setJsCode] = useState("console.log('Hello world');");
+
+  let { projectID } = useParams();
 
   const changeTheme = () => {
     if (islightMode) {
@@ -28,12 +32,59 @@ const EditorApp = () => {
     const js = `<script>${jsCode}</script>`;
 
     const iframe = document.getElementById("iframe");
-    iframe.srcdoc = html + css + js;
+
+    if (iframe) {
+      iframe.srcdoc = html + css + js;
+    }
   };
 
   useEffect(() => {
     run();
   }, [htmlCode, cssCode, jsCode]);
+
+  // get project from API
+  useEffect(() => {
+    fetch(api_based_url + "/getProject", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+        projId: projectID,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setHtmlCode(data.project.htmlCode || "");
+          setCssCode(data.project.cssCode || "");
+          setJsCode(data.project.jsCode || "");
+        } else {
+          console.error("Failed to fetch project:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching project:", error);
+      });
+  }, [projectID]);
+
+  // handling ctr + s
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        console.log("press");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <>

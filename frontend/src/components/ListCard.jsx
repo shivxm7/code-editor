@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import code from "../images/code.png";
 import delimg from "../images/delete.png";
 import { api_based_url } from "../helper";
+import { useNavigate } from "react-router-dom";
 
 const ListCard = ({ item }) => {
   const [isDeleteModel, setisDeleteModel] = useState(false);
-
+  const navigate = useNavigate();
   const deleteProj = (id) => {
     fetch(api_based_url + "/deleteProject", {
       mode: "cors",
@@ -33,7 +34,12 @@ const ListCard = ({ item }) => {
   return (
     <>
       <div className="listcard mb-2 flex items-center justify-between w-full p-[10px] bg-[#141414] rounded-lg cursor-pointer hover:bg-[#202020]">
-        <div className="flex items-center gap-2">
+        <div
+          onClick={() => {
+            navigate(`/editorApp/${item._id}`);
+          }}
+          className="flex items-center gap-2"
+        >
           <img className="w-[80px]" src={code} alt="" />
           <div>
             <h3 className="text-[20px]">{item.title}</h3>
