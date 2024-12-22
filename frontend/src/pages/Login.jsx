@@ -30,7 +30,9 @@ const Login = () => {
           localStorage.setItem("token", data.token);
           localStorage.setItem("isLoggedIn", true);
           localStorage.setItem("userId", data.userId);
-          navigate("/");
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 200);
         } else {
           setError(data.message);
         }

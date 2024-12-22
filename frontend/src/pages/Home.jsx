@@ -99,7 +99,7 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar isGridLayout={isGridLayout} setisGridLayout={setisGridLayout} />
       <div className="flex items-start-center justify-between px-[100px] my-[40px]">
         <h1 className="text-2xl">Hi! {data ? data.name : ""} 👋</h1>
         <div className="inputbox flex gap-1 items-center !w-[350px]">

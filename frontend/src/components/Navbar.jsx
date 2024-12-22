@@ -6,9 +6,15 @@ import { MdOutlineLightMode } from "react-icons/md";
 import { BsGridFill } from "react-icons/bs";
 import { api_based_url, toggleClass } from "../helper";
 
-const Navbar = () => {
+const Navbar = ({ isGridLayout, setisGridLayout }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const logout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
+    window.location.reload("/");
+  };
 
   useEffect(() => {
     fetch(api_based_url + "/getUserDetails", {
@@ -42,6 +48,13 @@ const Navbar = () => {
           <Link to="/about">About</Link>
           <Link to="/contact">Contact Us</Link>
           <Link to="/services">Services</Link>
+          <button
+            onClick={logout}
+            className="btnBlue !bg-red-500 font-sm !py-2 hover:!bg-red-600"
+          >
+            Logout
+          </button>
+
           <Avatar
             onClick={() => {
               toggleClass(".dropDownNavBar", "hidden");
@@ -67,10 +80,14 @@ const Navbar = () => {
           </i>
 
           <i
+            onClick={() => {
+              setisGridLayout(!isGridLayout);
+            }}
             className="flex items-center gap-2 mt-3 mb-2 cursor-pointer"
             style={{ fontStyle: "normal" }}
           >
-            <BsGridFill className="text-[20px]" /> Grid layout
+            <BsGridFill className="text-[20px]" />{" "}
+            {isGridLayout ? "List" : "Grid"} layout
           </i>
         </div>
       </div>
