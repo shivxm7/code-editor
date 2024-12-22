@@ -16,6 +16,12 @@ const Home = () => {
   const [projectTitle, setProjectTitle] = useState("");
   const navigate = useNavigate();
 
+  // Search query
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredProjects = projData?.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const createProject = (e) => {
     if (projectTitle === "") {
       alert("Enter Project title first");
@@ -97,7 +103,13 @@ const Home = () => {
       <div className="flex items-start-center justify-between px-[100px] my-[40px]">
         <h1 className="text-2xl">Hi! {data ? data.name : ""} 👋</h1>
         <div className="inputbox flex gap-1 items-center !w-[350px]">
-          <input type="text" placeholder="Search Here..." />
+          <input
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            type="text"
+            placeholder="Search Here..."
+          />
           <button
             onClick={() => {
               setCreateProj(true);
@@ -112,11 +124,13 @@ const Home = () => {
       <div className="cards">
         {!isGridLayout ? (
           <div className="list px-[100px]">
-            {projData
-              ? projData.map((item, index) => {
-                  return <ListCard key={index} item={item} />;
-                })
-              : ""}
+            {filteredProjects && filteredProjects.length > 0 ? (
+              filteredProjects.map((item, index) => {
+                return <ListCard key={index} item={item} />;
+              })
+            ) : (
+              <p>No projects found.</p>
+            )}
 
             {/* <ListCard />
             <ListCard />
@@ -124,11 +138,13 @@ const Home = () => {
           </div>
         ) : (
           <div className="grid px-[100px]">
-            {projData
-              ? projData.map((item, index) => {
-                  return <GridCard key={index} item={item} />;
-                })
-              : ""}
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((item, index) => {
+                return <GridCard key={index} item={item} />;
+              })
+            ) : (
+              <p>No projects found.</p>
+            )}
 
             {/* <GridCard />
             <GridCard />

@@ -20,8 +20,7 @@ const EditorApp = () => {
                                               </head>
                                               <body>
                                               </body>
-                                            </html>
-`);
+                                            </html>`);
   const [cssCode, setCssCode] = useState("body { background-color: #f4f4f4; }");
   const [jsCode, setJsCode] = useState("console.log('Hello world');");
 
