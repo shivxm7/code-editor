@@ -10,7 +10,18 @@ const EditorApp = () => {
   const [islightMode, setIsLightMode] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [tab, setTab] = useState("html");
-  const [htmlCode, setHtmlCode] = useState("<h1>Hello World!</h1>");
+  const [htmlCode, setHtmlCode] = useState(`<!doctype html>
+                                            <html lang="en">
+                                              <head>
+                                                <meta charset="UTF-8" />
+                                                <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+                                                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                                <title>Vite + React</title>
+                                              </head>
+                                              <body>
+                                              </body>
+                                            </html>
+`);
   const [cssCode, setCssCode] = useState("body { background-color: #f4f4f4; }");
   const [jsCode, setJsCode] = useState("console.log('Hello world');");
 
@@ -74,8 +85,35 @@ const EditorApp = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === "s") {
-        event.preventDefault();
-        console.log("press");
+        event.preventDefault(); // Prevent the default save file dialog
+
+        // Ensure that projectID and code states are updated and passed to the fetch request
+        fetch(api_based_url + "/updateProject", {
+          mode: "cors",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: localStorage.getItem("userId"),
+            projId: projectID,
+            htmlCode: htmlCode,
+            cssCode: cssCode,
+            jsCode: jsCode,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Project saved successfully");
+            } else {
+              alert("Something went wrong");
+            }
+          })
+          .catch((err) => {
+            console.error("Error saving project:", err);
+            alert("Failed to save project. Please try again.");
+          });
       }
     };
 
@@ -84,7 +122,7 @@ const EditorApp = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [projectID, htmlCode, cssCode, jsCode]);
 
   return (
     <>

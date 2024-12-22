@@ -155,4 +155,27 @@ router.post("/getProject", async (req, res) => {
     return res.json({ success: false, message: "User not found" });
   }
 });
+
+router.post("/updateProject", async (req, res) => {
+  let { userId, projId, htmlCode, cssCode, jsCode } = req.body;
+  let user = await userModel.findOne({ _id: userId });
+  if (user) {
+    let project = await projectModel.findOneAndUpdate(
+      { _id: projId },
+      { htmlCode: htmlCode, cssCode: cssCode, jsCode: jsCode },
+      { new: true }
+    );
+
+    if (project) {
+      return res.json({
+        success: true,
+        messgae: "Project updated successfully",
+      });
+    } else {
+      return res.json({ success: false, message: "Project not found!" });
+    }
+  } else {
+    return res.json({ success: false, messgae: "user not found" });
+  }
+});
 module.exports = router;
