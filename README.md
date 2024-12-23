@@ -1,1 +1,1 @@
-Simple Code editor using MERN STACK
+Simple Code editor using MERN STACK.
