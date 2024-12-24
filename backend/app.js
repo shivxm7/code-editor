@@ -23,7 +23,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // using cors
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://shivxm-code-hub.netlify.app",
+    credentials: true,
+  })
+);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
