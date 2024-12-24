@@ -87,7 +87,7 @@ const Signup = () => {
                   setPwd(e.target.value);
                 }}
                 value={pwd}
-                type="text"
+                type="password"
                 placeholder="Password"
               />
             </div>
